@@ -1,41 +1,50 @@
 #include <iostream>
-#include <cstdlib>
-#include <time.h>
-
 
 using namespace std;
 
+const int n1 = 10000;
+const int n2 = 10000;
+int arr[n1][n2];
 
-const int row = 1000;
-const int col = 10000;
-int buf[row][col];
-
-
-int main(int argc, char * argv[])
+int main(int argc, char *argv[])
 {
-    srand(time(NULL));
-    for (int i = 0; i < row; ++i) {
-        for (int j = 0; j < col; ++j) {
-            buf[i][j] = rand();
-        }
-    }
-
+    // order 1
     clock_t st = clock();
-    int64_t sum = 0;
-    for (int i = 0; i < row; ++i) {
-        for (int j = 0; j < col; ++j) {
-            sum += buf[i][j];
+    for (int i = 0; i < n1; ++i) {
+        for (int j = 0; j < n2; ++j) {
+            arr[i][j] = 314;
         }
     }
-    cout << "time for order 1: " << clock() - st << endl;
+    cout << "writing time of order 1 = " << clock() - st << endl;
 
+    int cnt = 0;
     st = clock();
-    sum = 0;
-    for (int j = 0; j < col; ++j) {
-        for (int i = 0; i < row; ++i) {
-            sum += buf[i][j];
+    for (int i = 0; i < n1; ++i) {
+        for (int j = 0; j < n2; ++j) {
+            if (arr[i][j] % 10) {
+                ++cnt;
+            }
         }
     }
-    cout << "time for order 2: " << clock() - st << endl;
-    return 0;
+    cout << "reading time of order 1 = " << clock() - st << endl;
+
+    // order 2
+    st = clock();
+    for (int i = 0; i < n2; ++i) {
+        for (int j = 0; j < n1; ++j) {
+            arr[j][i] = 314;
+        }
+    }
+    cout << "writing time of order 2 = " << clock() - st << endl;
+
+    cnt = 0;
+    st = clock();
+    for (int i = 0; i < n2; ++i) {
+        for (int j = 0; j < n1; ++j) {
+            if (arr[j][i] % 10) {
+                ++cnt;
+            }
+        }
+    }
+    cout << "reading time of order 2 = " << clock() - st << endl;
 }
